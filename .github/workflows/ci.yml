@@ -46,9 +46,7 @@ jobs:
       working-directory: ${{ env.solutionDirectory }}
       
     - name: Run unit tests
-      run: |
-        dotnet test **/*.Tests.csproj --configuration ${{ env.buildConfiguration }} --collect "XPlat Code coverage" -- RunConfiguration.DisableAppDomain=true
-        dotnet test **/*UnitTests.csproj --configuration ${{ env.buildConfiguration }} --collect "XPlat Code coverage" -- RunConfiguration.DisableAppDomain=true
+      run: dotnet test *.sln --configuration ${{ env.buildConfiguration }} --collect "XPlat Code coverage" -- RunConfiguration.DisableAppDomain=true
       working-directory: ${{ env.solutionDirectory }}
       
     - name: Install ReportGenerator tool
