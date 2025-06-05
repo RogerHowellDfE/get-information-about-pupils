@@ -38,7 +38,8 @@ jobs:
       
     - name: Build solution
       run: dotnet build *.sln --configuration ${{ env.buildConfiguration }} --no-restore -p:DeployOnBuild=true -p:WebPublishMethod=Package -p:PackageAsSingleFile=true -p:SkipInvalidConfigurations=true -p:DesktopBuildPackageLocation="${{ github.workspace }}\WebApp.zip" -p:DeployIisAppPath="Default Web Site"
-
+      working-directory: ./DfE.GIAP.All
+      
     - name: Run unit tests
       run: |
         dotnet test **/*.Tests.csproj --configuration ${{ env.buildConfiguration }} --collect "XPlat Code coverage" -- RunConfiguration.DisableAppDomain=true
