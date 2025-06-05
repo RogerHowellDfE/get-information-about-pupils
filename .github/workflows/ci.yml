@@ -1,5 +1,8 @@
 name: giap-web-ci
 
+permissions:
+  contents: read
+
 on:
   push:
 
