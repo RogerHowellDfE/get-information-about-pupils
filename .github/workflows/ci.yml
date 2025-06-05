@@ -37,7 +37,7 @@ jobs:
       working-directory: ./DfE.GIAP.All
       
     - name: Build solution
-      run: dotnet build ./DfE.GIAP.All/DfE.GIAP.all.sln --configuration ${{ env.buildConfiguration }} --no-restore -p:DeployOnBuild=true -p:WebPublishMethod=Package -p:PackageAsSingleFile=true -p:SkipInvalidConfigurations=true -p:DesktopBuildPackageLocation="${{ github.workspace }}\WebApp.zip" -p:DeployIisAppPath="Default Web Site"
+      run: dotnet build *.sln --configuration ${{ env.buildConfiguration }} --no-restore -p:DeployOnBuild=true -p:WebPublishMethod=Package -p:PackageAsSingleFile=true -p:SkipInvalidConfigurations=true -p:DesktopBuildPackageLocation="${{ github.workspace }}\WebApp.zip" -p:DeployIisAppPath="Default Web Site"
 
     - name: Run unit tests
       run: |
