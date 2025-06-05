@@ -1,0 +1,266 @@
+﻿@model CookiePreferencesViewModel
+@{
+    ViewData["Title"] = "Cookies";
+}
+
+<h1 class="govuk-heading-xl">Cookies</h1>
+
+<p class="govuk-body">Cookies are small files saved on your phone, tablet or computer whenever you visit a website.</p>
+<p class="govuk-body">We use cookies to make this site work and collect information about you use our service.</p>
+
+<div>
+    <h2 class="govuk-heading-l">Cookies that measure website use</h2>
+    <p class="govuk-body">
+        We use Microsoft Azure Application Insights software to collect anonymised information about how you use GIAP.
+        We do this to help make sure the site is meeting the needs of its users and to help us make improvements to the site and to government digital services.
+    </p>
+
+    <div class="govuk-inset-text">
+        We do not allow Microsoft to use or share the data about how you use this site.
+    </div>
+
+    <p class="govuk-body">
+        Microsoft Azure Application Insights stores information about:
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>how you got to the site</li>
+        <li>the pages you visit on GIAP and how long you spend on them</li>
+        <li>what you click on while you’re visiting the site</li>
+    </ul>
+    <p class="govuk-body">
+        Microsoft Azure Application Insights sets the following cookies
+    </p>
+
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Name</th>
+                <th scope="col" class="govuk-table__header">Purpose</th>
+                <th scope="col" class="govuk-table__header">Expires</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">ai_user</th>
+                <td class="govuk-table__cell">These help us count how many people visit GIAP by tracking if you’ve visited before</td>
+                <td class="govuk-table__cell">28 Days</td>
+            </tr>
+            <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">ai_session</th>
+                <td class="govuk-table__cell">These help us understand your activity while visiting the GIAP service</td>
+                <td class="govuk-table__cell">24 Hours</td>
+            </tr>
+            <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">giapwebsiteuse</th>
+                <td class="govuk-table__cell">Remembers your website use cookie preference</td>
+                <td class="govuk-table__cell">28 Days</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h2 class="govuk-heading-l">Cookies that help with communications and marketing</h2>
+    <p class="govuk-body">These cookies may be set by third party websites linked to our service.</p>
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Name</th>
+                <th scope="col" class="govuk-table__header">Purpose</th>
+                <th scope="col" class="govuk-table__header">Expires</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">giapcomms</th>
+                <td class="govuk-table__cell">Remembers your communications and marketing cookie preference</td>
+                <td class="govuk-table__cell">28 Days</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h2 class="govuk-heading-l">Cookies that remember your settings</h2>
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Name</th>
+                <th scope="col" class="govuk-table__header">Purpose</th>
+                <th scope="col" class="govuk-table__header">Expires</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">giaphidecookiesacceptedbanner</th>
+                <td class="govuk-table__cell">Remembers if you have hidden the grey cookies accepted banner</td>
+                <td class="govuk-table__cell">28 Days</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h2 class="govuk-heading-l">Strictly necessary cookies</h2>
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Name</th>
+                <th scope="col" class="govuk-table__header">Purpose</th>
+                <th scope="col" class="govuk-table__header">Expires</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">connect.sid</th>
+                <td class="govuk-table__cell">Remembers the choices you make while active on the GIAP service</td>
+                <td class="govuk-table__cell">Expires if you are inactive on the service for more than 30 minutes</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-l">Change your cookie settings</h2>
+            <form asp-controller="Cookies" asp-action="CookiePreferences" method="POST">
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                            Do you want to accept analytics cookies?
+                        </legend>
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    @if (Model.CookieUse.IsCookieWebsiteUse)
+                                    {
+                                        <input class="govuk-radios__input"
+                                               id="cookie-preferences--website-use-on--radio-button"
+                                               asp-for="CookieUse.CookieWebsiteUse"
+                                               name="cookieWebsiteUse"
+                                               type="radio"
+                                               value="true"
+                                               checked />
+                                        <label class="govuk-label govuk-radios__label" id="cookie-preferences--website-use-on--label" for="cookie-preferences--website-use-on--radio-button">
+                                            On
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <input class="govuk-radios__input"
+                                               id="cookie-preferences--website-use-on--radio-button"
+                                               asp-for="CookieUse.CookieWebsiteUse"
+                                               name="cookieWebsiteUse"
+                                               type="radio"
+                                               value="true" />
+                                        <label class="govuk-label govuk-radios__label" id="cookie-preferences--website-use-on--label" for="cookie-preferences--website-use-on--radio-button">
+                                            On
+                                        </label>
+                                    }
+                                </div>
+                                <div class="govuk-radios__item">
+                                    @if (!Model.CookieUse.IsCookieWebsiteUse)
+                                    {
+                                        <input class="govuk-radios__input"
+                                               id="cookie-preferences--website-use-off--radio-button"
+                                               asp-for="CookieUse.CookieWebsiteUse"
+                                               name="cookieWebsiteUse"
+                                               type="radio"
+                                               value="false"
+                                               checked />
+                                        <label id="cookie-preferences--website-use-off--label" class="govuk-label govuk-radios__label" for="cookie-preferences--website-use-off--radio-button">
+                                            Off
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <input class="govuk-radios__input"
+                                               id="cookie-preferences--website-use-off--radio-button"
+                                               asp-for="CookieUse.CookieWebsiteUse"
+                                               name="cookieWebsiteUse"
+                                               type="radio"
+                                               value="false" />
+                                        <label id="cookie-preferences--website-use-off--label" class="govuk-label govuk-radios__label" for="cookie-preferences--website-use-off--radio-button">
+                                            Off
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                            Do you want to accept communications and marketing cookies?
+                        </legend>
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    @if (Model.CookieUse.IsCookieComms)
+                                    {
+                                        <input class="govuk-radios__input"
+                                               id="cookie-preferences--comms-on--radio-button"
+                                               asp-for="CookieUse.CookieComms"
+                                               name="cookieComms"
+                                               value="true"
+                                               type="radio"
+                                               checked />
+                                        <label class="govuk-label govuk-radios__label" id="cookie-preferences--comms-on--label" for="cookie-preferences--comms-on--radio-button">
+                                            On
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <input class="govuk-radios__input"
+                                               id="cookie-preferences--comms-on--radio-button"
+                                               asp-for="CookieUse.CookieComms"
+                                               name="cookieComms"
+                                               value="true"
+                                               type="radio" />
+                                        <label class="govuk-label govuk-radios__label" id="cookie-preferences--comms-on--label" for="cookie-preferences--comms-on--radio-button">
+                                            On
+                                        </label>
+                                    }
+                                </div>
+                                <div class="govuk-radios__item">
+                                    @if (!Model.CookieUse.IsCookieComms)
+                                    {
+                                        <input class="govuk-radios__input"
+                                               id="cookie-preferences--comms-off--radio-button"
+                                               asp-for="CookieUse.CookieComms"
+                                               name="cookieComms"
+                                               value="false"
+                                               type="radio"
+                                               checked />
+                                        <label class="govuk-label govuk-radios__label" id="cookie-preferences--comms-off--label" for="cookie-preferences--comms-off--radio-button">
+                                            Off
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <input class="govuk-radios__input"
+                                               id="cookie-preferences--comms-off--radio-button"
+                                               asp-for="CookieUse.CookieComms"
+                                               name="cookieComms"
+                                               value="false"
+                                               type="radio" />
+                                        <label class="govuk-label govuk-radios__label" id="cookie-preferences--comms-off--label" for="cookie-preferences--comms-off--radio-button">
+                                            Off
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Save cookie settings
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

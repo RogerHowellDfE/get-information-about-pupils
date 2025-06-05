@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Error: There is a problem with the service";
+}
+@model ErrorModel
+
+<div class="govuk-width-container" id="error_container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <form asp-controller="Home" asp-action="Error" method="post">
+                <h1 class="govuk-heading-l">There is a problem with the service, please try again later.</h1>
+                @if (Model.ShowError)
+                {
+                    <pre>@Model.ExceptionMessage</pre>
+                    <pre>@Model.Stacktrace</pre>
+                }
+            </form>
+            <p class="govuk-body">
+                <a class="govuk-link" asp-controller="Landing" asp-action="Index" id="go-home-link">Please return to the home page</a>.
+            </p>
+        </div>
+    </div>
+</div>

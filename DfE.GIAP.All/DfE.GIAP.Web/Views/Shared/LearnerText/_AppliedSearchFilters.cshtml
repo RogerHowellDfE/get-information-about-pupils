@@ -1,0 +1,35 @@
+﻿@model LearnerTextSearchViewModel
+
+<form action="@Model.RedirectUrls.RemoveAction" method="POST">
+
+    <input type="hidden" name="SearchText" for="SearchText" value="@Model.SearchText" />
+    <input type="hidden" value="@Model.SearchFilters.CurrentFiltersAppliedString" name="SearchFilters.CurrentFiltersAppliedString" />
+
+    <div class="govuk-form-group">
+        @foreach (var item in Model.SearchFilters.CurrentFiltersApplied)
+        {
+            if (item.FilterType == DfE.GIAP.Core.Models.Search.FilterType.Dob)
+            {
+                <div class="webapp-filter-item" title="Date of birth: @item.FilterName">
+                    <button type="submit" id="results-button--search-@item.FilterType-@item.FilterName.Replace('/', '-')" title="Remove item" aria-label="Remove item" name="searchByRemove" value="@item.FilterName" aria-describedby="results-button--search-@item.FilterType-@item.FilterName.Replace('/', '-')-describe">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                    <span id="results-button--search-@item.FilterType-@item.FilterName.Replace('/', '-')-describe">
+                        Date of birth: @item.FilterName
+                    </span>
+                </div>
+            }
+            else
+            {
+                <div class="webapp-filter-item" title="@item.FilterType.ToString(): @item.FilterName">
+                    <button type="submit" id="results-button--search-@item.FilterType-@item.FilterName" title="Remove item" aria-label="Remove item" name="searchByRemove" value="@item.FilterName" aria-describedby="results-button--search-@item.FilterType-@item.FilterName-describe">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                    <span id="results-button--search-@item.FilterType-@item.FilterName-describe">
+                        @item.FilterType.ToString(): @item.FilterName
+                    </span>
+                </div>
+            }
+        }
+    </div>
+</form>

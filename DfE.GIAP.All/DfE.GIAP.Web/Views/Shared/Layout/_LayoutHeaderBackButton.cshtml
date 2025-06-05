@@ -1,0 +1,15 @@
+﻿@model DfE.GIAP.Web.ViewModels.BackButtonViewModel
+
+@if (Model != null && Model.IsBackButtonEnabled)
+{
+    <div class="govuk-width-container">
+        @if (Model.PreviousController != null && Model.PreviousAction != null)
+        {
+            <a asp-controller="@Model.PreviousController" asp-action="@Model.PreviousAction" id="back-link--link" class="govuk-back-link">Back</a>
+        }
+        else
+        {
+            <a asp-route-returnUrl="@ViewContext.HttpContext.Request.Path" id="back-link--link" class="govuk-back-link">Back</a>
+        }
+    </div>
+}

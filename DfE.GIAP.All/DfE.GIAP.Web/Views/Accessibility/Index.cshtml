@@ -1,0 +1,12 @@
+﻿@model AccessibilityViewModel
+@{
+    ViewData["Title"] = @Html.Raw(Model.Response.Title);
+}
+
+<div class="govuk-width-container">
+    <h1 id="accessibility--heading--text" class="govuk-heading-xl">@Html.Raw(Model.Response.Title)</h1>
+
+    <div class="govuk-grid-row">
+        @Html.Raw(Model.Response.Body)
+    </div>
+</div>

@@ -1,0 +1,58 @@
+﻿@model LearnerTextSearchViewModel
+
+<div class="govuk-accordion__section ">
+    <div class="govuk-accordion__section-header">
+        <h4 class="govuk-accordion__section-heading">
+            <span class="govuk-accordion__section-button govuk-!-font-size-19 webapp-filter-accordion-title" id="header--middlename">
+                Middle name
+            </span>
+        </h4>
+        @if (Model.FilterErrors.MiddlenameError)
+        {
+            <span id="middlename--error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> Enter a middlename
+            </span>
+        }
+    </div>
+
+    <div id="accordion-default-search-filters-content-2" class="govuk-accordion__section-content">
+        <form action="@Model.RedirectUrls.MiddlenameFilterUrl" method="POST">
+
+            <input type="hidden" name="ReturnRoute" for="ReturnRoute" value="@Model.ReturnRoute" />
+            <input type="hidden" value="@Model.SearchFilters?.CurrentFiltersAppliedString" name="SearchFilters.CurrentFiltersAppliedString" />
+            <input type="hidden" name="SearchFilters.CustomFilterText.DobYear" value="@Model.SearchFilters.CustomFilterText.DobYear" />
+            <input type="hidden" name="SearchFilters.CustomFilterText.DobMonth" value="@Model.SearchFilters.CustomFilterText.DobMonth" />
+            <input type="hidden" name="SearchFilters.CustomFilterText.DobDay" value="@Model.SearchFilters.CustomFilterText.DobDay" />
+
+            <input type="hidden" name="SearchText" for="SearchText" value="@Model.SearchText" />
+            <input type="hidden" value="@Model.SearchFilters.CurrentFiltersAppliedString" name="SearchFilters.CurrentFiltersAppliedString" />
+            <div class="govuk-form-group webapp-filter-accordion-input">
+                <input class="govuk-input govuk-input--width-20" id="search-middlename--text" aria-labelledby="filter--search header--middlename" type="text" name="SearchFilters.CustomFilterText.Middlename" value="">
+            </div>
+            <button class="govuk-button webapp-filter-accordion-button" id="button-submit-ok--searchmiddlename" type="submit" data-module="govuk-button">
+                OK
+            </button>
+
+            @foreach (var filter in Model.Filters.Where(x => x.Name.Equals("MiddlenamesLC")))
+            {
+                if (filter.Items.Count < 25)
+                {
+                    foreach (var item in filter.Items)
+                    {
+                        <div>
+                            <button class="webapp-button-as-link webapp-facet-link" id="search--facet-middle-name--@item.Value" name="middlenameFilter" value="@item.Value" type="submit" data-module="govuk-button">
+                                @item.Value (@item.Count)
+                            </button>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="govuk-inset-text">
+                        <p>Results are greater than 25. Please narrow your search.</p>
+                    </div>
+                }
+            }
+        </form>
+    </div>
+</div>

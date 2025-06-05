@@ -1,0 +1,21 @@
+﻿@model GlossaryViewModel
+@{
+    ViewData["Title"] = @Html.Raw(Model.Response.Title);
+}
+
+
+<div class="govuk-width-container">
+    <h1 id="glossary--heading--text" class="govuk-heading-xl">@Html.Raw(Model.Response.Title)</h1>
+
+    <div class="govuk-grid-row">
+        @Html.Raw(Model.Response.Body)
+
+        <div class="govuk-grid-column-one-third">
+            <p></p>
+        </div>
+
+        <div class="govuk-grid-column-two-thirds">
+            <partial name="_MetaDataDownloadListPartial" model="@Model" />
+        </div>
+    </div>
+</div>

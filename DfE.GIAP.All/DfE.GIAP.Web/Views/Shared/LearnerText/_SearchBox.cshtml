@@ -1,0 +1,26 @@
+﻿@model LearnerTextSearchViewModel
+
+<form asp-controller="@Model.LearnerTextSearchController" asp-action="@Model.LearnerTextSearchAction" method="POST">
+    <div class="govuk-form-group @(ViewData.ModelState["SearchText"]?.Errors.Count > 0 ? "govuk-form-group--error" : "")">
+        <div class="govuk-label">Enter a first name and/or surname</div>
+        @if (ViewData.ModelState["SearchText"]?.Errors.Count > 0)
+        {
+            <span class="govuk-error-message">
+                @Html.ValidationMessageFor(m => m.SearchText)
+            </span>
+        }
+        <input class="govuk-input @(ViewData.ModelState["SearchText"]?.Errors.Count > 0 ? "govuk-input--error" : "")"
+               name="SearchText"
+               value="@Model.SearchText" />
+    </div>
+
+    <div class="govuk-button-group">
+        <button type="submit" class="govuk-button" data-module="govuk-button" id="search--btn" type="submit" asp-controller="@Model.LearnerTextSearchController" asp-action="@Model.LearnerTextSearchAction" asp-route-reset="true">
+            Search
+        </button>
+        <a class="govuk-link" id="link-search-again" asp-controller="@Model.LearnerTextSearchController" asp-action="@Model.LearnerTextSearchAction" asp-route-reset="true"
+           value="SearchAgain" name="searchAgain">Search again</a>
+        <a class="govuk-link" id="search-learnernumber--link" asp-controller="@ApplicationRoute.Search" asp-action="@Model.LearnerNumberAction"
+           value="SearchLearnerNumber" name="SearchLearnerNumber">Search using @Model.LearnerNumberLabel only</a>
+    </div>
+</form>

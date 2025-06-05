@@ -1,0 +1,44 @@
+﻿@model LearnerDownloadViewModel
+
+@{
+    ViewData["Title"] = Model.SearchResultPageHeading;
+}
+
+<form action=@Route.NationalPupilDatabase.LearnerNumberDownloadFile method="POST">
+
+    <input type="hidden" name="SelectedPupils" value="@Model.SelectedPupils" />
+    <input type="hidden" name="LearnerNumber" value="@Model.LearnerNumber" />
+
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <h1 class="govuk-heading-xl" id="search-download-heading">
+                @Model.SearchResultPageHeading
+            </h1>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-form-group">
+                <p class="govuk-body italic" id="selected-records--message">You have selected <span id="selected-records--count">@Model.SelectedPupilsCount</span> record<span id="selected-records--message-plural">@(Model.SelectedPupilsCount > 1 ? "s" : "")</span> to download</p>
+                <h3 class="govuk-heading-m">Select data type</h3>
+                <input asp-for="SelectedPupilsCount" type="hidden" value="@Model.SelectedPupilsCount" />
+
+                @if (!string.IsNullOrEmpty(Model.ErrorDetails))
+                {
+                    <span id="results--detail-errormessage" class="govuk-error-message webapp-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> @Model.ErrorDetails
+                    </span>
+                }
+                @(await Component.InvokeAsync("DownloadOptions", new
+                {
+                    downloadDataTypes = @Model.SearchDownloadDatatypes,
+                    downloadFileType = @Model.DownloadFileType,
+                    showTabDownloadType = true
+                }))
+            </div>
+            <div class="govuk-button-group">
+                <button class="govuk-button" id="btn-search-download" type="submit">Download</button>
+                <a class="govuk-link" asp-action="@Model.SearchAction" asp-route-returnToMPL="true" id="return--to--my--pupil--list--link">Return to my pupil list</a>
+            </div>
+        </div>
+    </div>
+</form>

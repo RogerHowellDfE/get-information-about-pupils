@@ -1,0 +1,25 @@
+﻿@model LearnerNumberSearchViewModel
+
+<h2 class="govuk-heading-m" id="search--heading">Search</h2>
+
+<form method="POST">
+    <input type="hidden" id="LearnerNumberLabel" name="LearnerNumberLabel" value="@Model.LearnerNumberLabel">
+
+    <div class="govuk-form-group">
+        <label class="govuk-label" for="search--textarea" id="lbl-search-box">@($"Enter single, or multiple {@Model.LearnerNumberLabel}s on separate lines.")</label>
+        <partial name="~/Views/Shared/LearnerNumber/_SearchBoxErrorMessage.cshtml" model="@Model" />
+        <textarea class="govuk-textarea @(!ViewData.ModelState.IsValid ? "govuk-textarea--error" : "")" name="@Html.NameFor(m => m.LearnerNumber)" id="search--textarea" rows="8" maxlength="56014">@Model.LearnerNumber</textarea>
+    </div>
+    <button asp-action="@Model.SearchAction" asp-route-reset="false" id="search--btn" value="Select" name="select" class="govuk-button">Search</button>
+
+    <ul class="govuk-list">
+        <li>
+            <a class="govuk-link" id="link-search-again" asp-action="@Model.SearchAction" asp-route-reset="true"
+               value="SearchAgain" name="searchAgain">Search again</a>
+        </li>
+        <li>
+            <a class="govuk-link" id="search-searchwithout--link" asp-controller="@Model.FullTextLearnerSearchController" asp-action="@Model.FullTextLearnerSearchAction"
+               value="SearchWithoutUpn" name="searchWithoutUpn">Search without @Model.LearnerNumberLabel</a>
+        </li>
+    </ul>
+</form>

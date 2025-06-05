@@ -1,0 +1,42 @@
+﻿@model LearnerTextSearchViewModel
+@{
+    ViewData["Title"] = Model.PageHeading;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-xl" id="search-type--text">@Model.PageHeading</h1>
+        @if (Model != null)
+        {
+            <input type="hidden" id="header--learner-text-database-name" asp-for="@Model.LearnerTextDatabaseName" />
+        }
+
+        @if (Model.ShowStarredPupilConfirmation)
+        {
+            <partial name="~/Views/Shared/LearnerText/_SearchBox.cshtml" model="Model" />
+            <partial name="~/Views/Search/Common/_StarredPupilConfirmation.cshtml" model="Model.StarredPupilConfirmationViewModel" />
+        }
+        else
+        {
+            <partial name="~/Views/Shared/LearnerText/_SearchBox.cshtml" model="Model" />
+
+            <div class="govuk-grid-row">
+                @if (Model.Filters != null)
+                {
+                    <div class="govuk-grid-column-one-quarter">
+                        <partial name="~/Views/Shared/LearnerText/_SearchFilters.cshtml" model="Model" />
+                    </div>
+                }
+                <div class="govuk-grid-column-three-quarters">
+                    <partial name="~/Views/Shared/LearnerText/_SearchResults.cshtml" model="Model" />
+                </div>
+            </div>
+        }
+
+        <p class="govuk-body">
+            <a href="/news" class="govuk-link" id="search-help--metadata--link">Release timetable</a> is available.
+        </p>
+
+        <partial name="_MetadataFilesPartial" />
+    </div>
+</div>

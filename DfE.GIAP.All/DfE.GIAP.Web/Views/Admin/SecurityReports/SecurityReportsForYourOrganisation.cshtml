@@ -1,0 +1,26 @@
+﻿@model SecurityReportsForYourOrganisationModel
+
+@{
+    ViewBag.Title = "Download security reports by your organisation";
+}
+
+<a class="govuk-back-link" asp-controller="Admin" asp-action="Index" id="admin-dashboard--security-reports-by-organisation-back-link">
+    Back
+</a>
+
+<div class="govuk-width-container">
+    <form method="post">
+        <h1 class="govuk-heading-xl">Download security reports by your organisation</h1>
+        <partial name="_ValidationSummary" model="ViewData.ModelState" />
+
+        <div class="govuk-width-container">
+            <select asp-for="@Model.DocumentId" class="govuk-select @(Model.HasInvalidDocumentList ? "govuk-textarea--error" : "")" asp-items="Model.SecurityReportTypes">
+                <option value="">Select a report</option>
+            </select>
+        </div>
+
+        <br />
+
+        <button name="download" class="govuk-button">Download</button>
+    </form>
+</div>

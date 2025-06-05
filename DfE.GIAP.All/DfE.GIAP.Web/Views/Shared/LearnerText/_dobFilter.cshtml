@@ -1,0 +1,119 @@
+﻿@model LearnerTextSearchViewModel
+
+<div class="govuk-accordion__section ">
+    <div class="govuk-accordion__section-header">
+        <h4 class="govuk-accordion__section-heading">
+            <span class="govuk-accordion__section-button govuk-!-font-size-19 webapp-filter-accordion-title" id="header--dob">
+                Date of birth
+            </span>
+        </h4>
+        @if (Model.FilterErrors.DobErrorEmpty)
+        {
+            <span id="dob--error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> Enter the date of birth and include a year only, month and year only, or day month and year
+            </span>
+        }
+        else if (Model.FilterErrors.DobErrorDayOnly)
+        {
+            <span id="dob--error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> You cannot filter by day only. You can filter on, year only, month and year only, and day month and year
+            </span>
+        }
+        else if (Model.FilterErrors.DobErrorMonthOnly)
+        {
+            <span id="dob--error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> You cannot filter by month only. You can filter on, year only, month and year only, and day month and year
+            </span>
+        }
+        else if (Model.FilterErrors.DobErrorDayOnly)
+        {
+            <span id="dob--error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> You cannot filter by day only. You can filter on, year only, month and year only, and day month and year
+            </span>
+        }
+        else if (Model.FilterErrors.DayOutOfRange)
+        {
+            <span id="dob--error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> Enter a day between 1 and 31
+            </span>
+        }
+        else if (Model.FilterErrors.DobErrorNoMonth)
+        {
+            <span id="dob--error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> You cannot filter by day and year. You can filter on, year only, month and year only, and day month and year
+            </span>
+        }
+        else if (Model.FilterErrors.DobErrorDayMonthOnly)
+        {
+            <span id="dob--error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> You cannot filter by day and month. You can filter on, year only, month and year only, and day month and year
+            </span>
+        }
+        else if (Model.FilterErrors.YearLimitHigh)
+        {
+            <span id="dob--error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> Enter a year older than 3 years
+            </span>
+        }
+        else if (Model.FilterErrors.YearLimitLow)
+        {
+            <span id="dob--error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> Enter a year on or after 1972
+            </span>
+        }
+        else if (Model.FilterErrors.MonthOutOfRange)
+        {
+            <span id="dob--error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> Enter a month between 1 and 12
+            </span>
+        }
+        else if (Model.FilterErrors.InvalidDob)
+        {
+            <span id="dob--error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> Enter a real date of birth
+            </span>
+        }
+    </div>
+    <div id="accordion-default-search-filters-content-@(Model.ShowMiddleNames ? "4" : "3")" class="govuk-accordion__section-content">
+        <form action="@Model.RedirectUrls.DobFilterUrl" method="POST">
+
+            <input type="hidden" name="ReturnRoute" for="ReturnRoute" value="@Model.ReturnRoute" />
+            <input type="hidden" name="SearchText" for="SearchText" value="@Model.SearchText" />
+            <input type="hidden" value="@Model.SearchFilters.CurrentFiltersAppliedString" name="SearchFilters.CurrentFiltersAppliedString" />
+            <div class="govuk-form-group webapp-filter-accordion-button">
+                <div class="govuk-date-input" id="date">
+                    <div class="govuk-date-input__item">
+                        <div class="govuk-form-group webapp-filter-accordion-button">
+                            <label class="govuk-label govuk-date-input__label" for="day">
+                                Day
+                            </label>
+                            <input class="govuk-input govuk-date-input__input govuk-input--width-2 @(Model.FilterErrors.DobError ? "govuk-textarea--error" : "")" id="day" name="SearchFilters.CustomFilterText.DobDay" type="text" inputmode="numeric"
+                                   value="@(Model.SearchFilters.CustomFilterText.DobDay > 0 ? Model.SearchFilters.CustomFilterText.DobDay.ToString() : "")">
+                        </div>
+                    </div>
+                    <div class="govuk-date-input__item">
+                        <div class="govuk-form-group webapp-filter-accordion-button">
+                            <label class="govuk-label govuk-date-input__label" for="month">
+                                Month
+                            </label>
+                            <input class="govuk-input govuk-date-input__input govuk-input--width-2 @(Model.FilterErrors.DobError ? "govuk-textarea--error" : "")" id="month" name="SearchFilters.CustomFilterText.DobMonth" type="text" inputmode="numeric"
+                                   value="@(Model.SearchFilters.CustomFilterText.DobMonth > 0 ? Model.SearchFilters.CustomFilterText.DobMonth.ToString() : "")">
+                        </div>
+                    </div>
+                    <div class="govuk-date-input__item">
+                        <div class="govuk-form-group webapp-filter-accordion-input">
+                            <label class="govuk-label govuk-date-input__label" for="year">
+                                Year
+                            </label>
+                            <input class="govuk-input govuk-date-input__input govuk-input--width-4 @(Model.FilterErrors.DobError ? "govuk-textarea--error" : "")" id="year" name="SearchFilters.CustomFilterText.DobYear" type="text" inputmode="numeric"
+                                   value="@(Model.SearchFilters.CustomFilterText.DobYear > 0 ? Model.SearchFilters.CustomFilterText.DobYear.ToString() : "")">
+                        </div>
+                    </div>
+                </div>
+                <button class="govuk-button webapp-filter-button-margin webapp-filter-accordion-button" id="submit--ok" type="submit" data-module="govuk-button">
+                    OK
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

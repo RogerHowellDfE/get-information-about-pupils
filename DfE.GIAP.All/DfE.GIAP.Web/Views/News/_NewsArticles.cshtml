@@ -1,0 +1,32 @@
+﻿@model NewsViewModel
+
+@{
+    int index = 0;
+}
+
+<div>
+    @foreach (var article in Model.Articles)
+    {
+        <div id=@($"news--articles--container{index}")>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full">
+                    @if (article.Pinned)
+                    {
+                        <strong class="govuk-tag govuk-tag--green" id=@($"news--label--text{index}")>
+                            Pinned
+                        </strong>
+                    }
+                    <h2 class="govuk-heading-m govuk-!-margin-top-1 govuk-!-text-break-word" id=@($"news--item-heading--text{index}")>
+                        @Html.Raw(article.Title)
+                    </h2>
+                    <p class="govuk-body govuk-!-text-break-word" id=@($"news--item-content--text{index}")>
+                        @Html.Raw(article.Body)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+        index++;
+    }
+</div>

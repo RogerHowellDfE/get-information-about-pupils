@@ -1,0 +1,11 @@
+﻿@model LearnerNumberSearchViewModel
+
+@if (Model.LearnerNumber.Length > 0)
+{
+    <input type="hidden" name="ReturnLearnerNumbers" value="@Model.LearnerNumber" />
+    <div class="govuk-grid-column-one-quarter">
+        <button class="govuk-list govuk-button--secondary" asp-action="ToDownloadSelectedULNData" id="download--csv--link" name="downloadASCSV" value="selected" type="submit">
+            @Model.DownloadSelectedLink
+        </button>
+    </div>
+ }

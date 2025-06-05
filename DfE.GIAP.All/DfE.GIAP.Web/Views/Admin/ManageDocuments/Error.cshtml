@@ -1,0 +1,14 @@
+﻿@model UserErrorViewModel
+@{
+    ViewData["Title"] = "Error: There is a problem with documents";
+}
+
+<div class="govuk-grid-row">
+    <div id="error_container" class="govuk-width-container">
+        <h1 class="govuk-heading-l">There is a problem.</h1>
+        <p class="govuk-body">
+            @Model.UserErrorMessage Try the action again. If the problem persists you can
+            <a class="govuk-link" href="@Global.ContactLinkURL" target="_blank">raise a service request</a>
+        </p>
+    </div>
+</div>

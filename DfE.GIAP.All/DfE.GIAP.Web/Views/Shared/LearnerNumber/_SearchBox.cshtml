@@ -1,0 +1,31 @@
+﻿@model LearnerNumberSearchViewModel
+
+<form method="POST">
+    <input type="hidden" id="LearnerNumberLabel" name="LearnerNumberLabel" value="@Model.LearnerNumberLabel">
+
+    <div class="govuk-form-group @(!ViewData.ModelState.IsValid ? "govuk-form-group--error" : "")">
+        <label class="govuk-label" id="lbl-search-box">
+            @($"Enter single, or multiple {@Model.LearnerNumberLabel}s on separate lines.")
+        </label>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <p id="more-detail-error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> @Model.SearchBoxErrorMessage
+            </p>
+        }
+
+        <textarea class="govuk-textarea @(!ViewData.ModelState.IsValid ? "govuk-textarea--error" : "")" name="@Html.NameFor(m => m.LearnerNumber)" id="search--textarea" rows="5" maxlength="56014">@Model.LearnerNumber</textarea>
+    </div>
+
+    <div class="govuk-button-group">
+        <button type="submit" class="govuk-button" data-module="govuk-button" asp-action="@Model.SearchAction" asp-route-reset="true" id="search--btn" value="Select" name="select">
+            Search
+        </button>
+        <a class="govuk-link" id="link-search-again" asp-action="@Model.SearchAction" asp-route-reset="true" value="SearchAgain" name="searchAgain">Search again</a>
+        <a class="govuk-link" id="search-searchwithout--link" asp-controller="@Model.FullTextLearnerSearchController" asp-action="@Model.FullTextLearnerSearchAction"
+           value="SearchWithoutUpn" name="searchWithoutUpn">
+            Search without @Model.LearnerNumberLabel
+        </a>
+    </div>
+</form>

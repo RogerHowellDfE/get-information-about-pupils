@@ -1,0 +1,184 @@
+[
+  {
+    "FrameworkFunction": "GetPupilsNpdUpns",
+    "EventID": "1100",
+    "EventName": "NPD UPN search",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetNationalPupilDatabaseByName",
+    "EventID": "1101",
+    "EventName": "NPD non-UPN search",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetPupilPremiumByUpns",
+    "EventID": "1102",
+    "EventName": "PP UPN search",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetPupilPremiumByName",
+    "EventID": "1103",
+    "EventName": "PP non-UPN search",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetPupilsByUlns",
+    "EventID": "1104",
+    "EventName": "FE ULN search",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetPupilsInformationByCustomFilters",
+    "EventID": "1105",
+    "EventName": "FE non-ULN search",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetCommonTransferFile",
+    "EventID": "1106",
+    "EventName": "NPD UPN CTF download",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetCSVFile",
+    "EventID": "1107",
+    "EventName": "NPD UPN CSV download",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetTABFile",
+    "EventID": "1108",
+    "EventName": "NPD UPN TAB download",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetCommonTransferFile",
+    "EventID": "1109",
+    "EventName": "NPD non-UPN CTF download",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetCSVFile",
+    "EventID": "1110",
+    "EventName": "NPD non-UPN CSV download",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetTABFile",
+    "EventID": "1111",
+    "EventName": "NPD non-UPN TAB download",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetPupilPremiumCSVFile",
+    "EventID": "1112",
+    "EventName": "PP UPN CSV download",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetPupilPremiumCSVFile",
+    "EventID": "1113",
+    "EventName": "PP non-UPN CSV download",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetUlnCSVFile",
+    "EventID": "1114",
+    "EventName": "FE ULN CSV download",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetUlnCSVFile",
+    "EventID": "1115",
+    "EventName": "FE non-ULN CSV download",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetCommonTransferFile",
+    "EventID": "1116",
+    "EventName": "MPL CTF download",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetCSVFile",
+    "EventID": "1117",
+    "EventName": "MPL CSV download",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetTABFile",
+    "EventID": "1118",
+    "EventName": "MPL TAB download",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "GetPupilPremiumCSVFile",
+    "EventID": "1119",
+    "EventName": "MPL PP CSV download",
+    "CheckPoint": "Post",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "AddDsiAuthentication",
+    "EventID": "1120",
+    "EventName": "User log in",
+    "CheckPoint": "Post",
+    "Status": "Success"
+  },
+  {
+    "FrameworkFunction": "DownloadFileAsync",
+    "EventID": "1121",
+    "EventName": "Pre-prepared download initiated",
+    "CheckPoint": "Download",
+    "Status": "Initiated"
+  },
+  {
+    "FrameworkFunction": "DownloadFileAsync",
+    "EventID": "1122",
+    "EventName": "Pre-prepared download successful",
+    "CheckPoint": "Download",
+    "Status": "Success"
+  },
+  {
+    "FrameworkFunction": "DownloadFileAsync",
+    "EventID": "2500",
+    "EventName": "Pre-prepared download not found",
+    "CheckPoint": "Download",
+    "Status": "Error"
+  },
+  {
+    "FrameworkFunction": "DownloadFileAsync",
+    "EventID": "2501",
+    "EventName": "An unhandled exception occurred",
+    "CheckPoint": "Download",
+    "Status": "Error"
+  },
+  {
+    "FrameworkFunction": "AddDsiAuthentication",
+    "EventID": "2502",
+    "EventName": "User log in unsuccessful - user not associated with GIAP service",
+    "CheckPoint": "Post",
+    "Status": "Error"
+  }
+]

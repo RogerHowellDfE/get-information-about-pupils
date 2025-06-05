@@ -1,0 +1,15 @@
+﻿@model LearnerNumberSearchViewModel
+@{
+    ViewData["Title"] = Model.PageHeading;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-xl" id="search-type--text">@Model.PageHeading</h1>
+        <partial name="~/Views/Shared/LearnerNumber/_SearchBox.cshtml" model="Model" />
+        <partial name="~/Views/Shared/LearnerNumber/_Results.cshtml" model="Model" />
+
+        <partial name="_ReleaseTimetablePartial" />
+        <partial name="_MetadataFilesPartial" />
+    </div>
+</div>
