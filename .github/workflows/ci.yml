@@ -2,6 +2,7 @@ name: giap-web-ci
 
 permissions:
   contents: read
+  packages: read
 
 on:
   push:
