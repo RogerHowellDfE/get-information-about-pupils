@@ -66,8 +66,10 @@ jobs:
     - name: Run gulp
       run: |
         npm install -g gulp
-        gulp default --gulpfile DfE.GIAP.Web/gulpfile.js --cwd DfE.GIAP.Web
+        gulp default --gulpfile DfE.GIAP.Web/gulpfile.js 
       working-directory: ${{ env.solutionDirectory }}
+      #--cwd DfE.GIAP.Web
+      
 #    - name: Upload build artifact
 #      uses: actions/upload-artifact@v4
 #      with:
