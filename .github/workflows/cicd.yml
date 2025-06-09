@@ -121,6 +121,33 @@ jobs:
       contents: read  # This is required for actions/checkout
 
     steps:
+      - name: Verify Azure secrets are defined
+        shell: pwsh
+        run: |
+          $missingSecrets = @()
+
+          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_CLIENT_ID }}")) {
+            $missingSecrets += "AZURE_CLIENT_ID"
+          }
+
+          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_TENANT_ID }}")) {
+            $missingSecrets += "AZURE_TENANT_ID"
+          }
+
+          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_SUBSCRIPTION_ID }}")) {
+            $missingSecrets += "AZURE_SUBSCRIPTION_ID"
+          }
+
+          if ($missingSecrets.Count -gt 0) {
+            Write-Host "::error::The following secrets are missing for the development environment:"
+            foreach ($secret in $missingSecrets) {
+              Write-Host "::error::- $secret"
+            }
+            exit 1
+          }
+
+          Write-Host "All required Azure secrets are defined for the development environment"
+
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
@@ -158,6 +185,33 @@ jobs:
       contents: read  # This is required for actions/checkout
 
     steps:
+      - name: Verify Azure secrets are defined
+        shell: pwsh
+        run: |
+          $missingSecrets = @()
+
+          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_CLIENT_ID }}")) {
+            $missingSecrets += "AZURE_CLIENT_ID"
+          }
+
+          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_TENANT_ID }}")) {
+            $missingSecrets += "AZURE_TENANT_ID"
+          }
+
+          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_SUBSCRIPTION_ID }}")) {
+            $missingSecrets += "AZURE_SUBSCRIPTION_ID"
+          }
+
+          if ($missingSecrets.Count -gt 0) {
+            Write-Host "::error::The following secrets are missing for the test environment:"
+            foreach ($secret in $missingSecrets) {
+              Write-Host "::error::- $secret"
+            }
+            exit 1
+          }
+
+          Write-Host "All required Azure secrets are defined for the test environment"
+
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
@@ -195,6 +249,33 @@ jobs:
       contents: read  # This is required for actions/checkout
 
     steps:
+      - name: Verify Azure secrets are defined
+        shell: pwsh
+        run: |
+          $missingSecrets = @()
+
+          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_CLIENT_ID }}")) {
+            $missingSecrets += "AZURE_CLIENT_ID"
+          }
+
+          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_TENANT_ID }}")) {
+            $missingSecrets += "AZURE_TENANT_ID"
+          }
+
+          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_SUBSCRIPTION_ID }}")) {
+            $missingSecrets += "AZURE_SUBSCRIPTION_ID"
+          }
+
+          if ($missingSecrets.Count -gt 0) {
+            Write-Host "::error::The following secrets are missing for the preproduction environment:"
+            foreach ($secret in $missingSecrets) {
+              Write-Host "::error::- $secret"
+            }
+            exit 1
+          }
+
+          Write-Host "All required Azure secrets are defined for the preproduction environment"
+
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
@@ -232,6 +313,33 @@ jobs:
       contents: read  # This is required for actions/checkout
 
     steps:
+      - name: Verify Azure secrets are defined
+        shell: pwsh
+        run: |
+          $missingSecrets = @()
+
+          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_CLIENT_ID }}")) {
+            $missingSecrets += "AZURE_CLIENT_ID"
+          }
+
+          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_TENANT_ID }}")) {
+            $missingSecrets += "AZURE_TENANT_ID"
+          }
+
+          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_SUBSCRIPTION_ID }}")) {
+            $missingSecrets += "AZURE_SUBSCRIPTION_ID"
+          }
+
+          if ($missingSecrets.Count -gt 0) {
+            Write-Host "::error::The following secrets are missing for the production environment:"
+            foreach ($secret in $missingSecrets) {
+              Write-Host "::error::- $secret"
+            }
+            exit 1
+          }
+
+          Write-Host "All required Azure secrets are defined for the production environment"
+
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
@@ -254,4 +362,3 @@ jobs:
         with:
           app-name: ${{ env.APP_NAME }}
           package: ./app-package
-
