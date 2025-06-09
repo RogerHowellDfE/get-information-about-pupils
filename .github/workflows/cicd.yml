@@ -1,19 +1,20 @@
 name: giap-web-cicd
 
 permissions:
-  contents: read
-  packages: read
+  contents: read # This is required to checkout the code.
+  packages: read # This is required to access the DfEDigital NuGet feed.
 
 on:
   push:
 
 jobs:
-  build:
+  build_and_test:
     runs-on: ubuntu-latest
 
     env:
       BUILD_CONFIGURATION: Release
       SOLUTION_DIRECTORY: ./DfE.GIAP.All
+      PUBLISH_DIRECTORY: ${{ env.SOLUTION_DIRECTORY }}/publish
 
     steps:
       - name: Checkout code
@@ -78,18 +79,22 @@ jobs:
         working-directory: ./DfE.GIAP.All
 
       - name: Publish application
-        run: dotnet publish *.sln --configuration ${{ env.BUILD_CONFIGURATION }} --output ${{ env.SOLUTION_DIRECTORY }}/publish
+        run: dotnet publish *.sln --configuration ${{ env.BUILD_CONFIGURATION }} --output ${{ env.PUBLISH_DIRECTORY }}
+        working-directory: ${{ env.SOLUTION_DIRECTORY }}
+
+      - name: Verify publish output
+        run: ls -la ${{ env.PUBLISH_DIRECTORY }}
         working-directory: ${{ env.SOLUTION_DIRECTORY }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: packaged_app_for_deployment
-          path: ${{ env.SOLUTION_DIRECTORY }}/publish
+          path: ${{ env.PUBLISH_DIRECTORY }}
 
   deploy_dev:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build_and_test
     environment:
       name: development
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
