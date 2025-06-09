@@ -8,6 +8,23 @@ on:
   push:
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    env:
+      SOLUTION_DIRECTORY: ./DfE.GIAP.All
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK from global.json
+        uses: actions/setup-dotnet@v4
+
+      - name: Verify formatting
+        run: dotnet format --include DfE.GIAP.Core/ DfE.GIAP.Core.UnitTests/ --verify-no-changes
+        working-directory: ${{ env.SOLUTION_DIRECTORY }}
+
   build_and_test:
     runs-on: ubuntu-latest
 
@@ -143,6 +160,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: packaged_app_for_deployment
+          path: ./app-package
+
+      - name: Verify downloaded artifact
+        run: ls -la ./app-package
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -156,7 +177,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.APP_NAME }}
-          package: .
+          package: ./app-package
 
   deploy_preproduction:
     runs-on: ubuntu-latest
@@ -176,6 +197,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: packaged_app_for_deployment
+          path: ./app-package
+
+      - name: Verify downloaded artifact
+        run: ls -la ./app-package
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -189,7 +214,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.APP_NAME }}
-          package: .
+          package: ./app-package
 
   deploy_prod:
     runs-on: ubuntu-latest
@@ -209,6 +234,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: packaged_app_for_deployment
+          path: ./app-package
+
+      - name: Verify downloaded artifact
+        run: ls -la ./app-package
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -222,5 +251,4 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.APP_NAME }}
-          package: .
-
+          package: ./app-package
