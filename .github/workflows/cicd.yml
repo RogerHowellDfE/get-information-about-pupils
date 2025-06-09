@@ -108,257 +108,45 @@ jobs:
           if-no-files-found: error
 
   deploy_dev:
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/deploy.yml
     needs: [build_and_test, lint]
-    environment:
-      name: development
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    env:
-      APP_NAME: giap-deploy-demo-development
-
-    permissions:
-      id-token: write # This is required for requesting the JWT (used to authenticate with Azure)
-      contents: read  # This is required for actions/checkout
-
-    steps:
-      - name: Verify Azure secrets are defined
-        shell: pwsh
-        run: |
-          $missingSecrets = @()
-
-          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_CLIENT_ID }}")) {
-            $missingSecrets += "AZURE_CLIENT_ID"
-          }
-
-          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_TENANT_ID }}")) {
-            $missingSecrets += "AZURE_TENANT_ID"
-          }
-
-          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_SUBSCRIPTION_ID }}")) {
-            $missingSecrets += "AZURE_SUBSCRIPTION_ID"
-          }
-
-          if ($missingSecrets.Count -gt 0) {
-            Write-Host "::error::The following secrets are missing for the development environment:"
-            foreach ($secret in $missingSecrets) {
-              Write-Host "::error::- $secret"
-            }
-            exit 1
-          }
-
-          Write-Host "All required Azure secrets are defined for the development environment"
-
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: packaged_app_for_deployment
-          path: ./app-package
-
-      - name: Verify downloaded artifact
-        run: ls -la ./app-package
-
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ env.APP_NAME }}
-          package: ./app-package
+    with:
+      environment: development
+      app_name: giap-deploy-demo-development
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
   deploy_test:
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/deploy.yml
     needs: deploy_dev
-    environment:
-      name: test
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    env:
-      APP_NAME: giap-deploy-demo-test
-
-    permissions:
-      id-token: write # This is required for requesting the JWT
-      contents: read  # This is required for actions/checkout
-
-    steps:
-      - name: Verify Azure secrets are defined
-        shell: pwsh
-        run: |
-          $missingSecrets = @()
-
-          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_CLIENT_ID }}")) {
-            $missingSecrets += "AZURE_CLIENT_ID"
-          }
-
-          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_TENANT_ID }}")) {
-            $missingSecrets += "AZURE_TENANT_ID"
-          }
-
-          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_SUBSCRIPTION_ID }}")) {
-            $missingSecrets += "AZURE_SUBSCRIPTION_ID"
-          }
-
-          if ($missingSecrets.Count -gt 0) {
-            Write-Host "::error::The following secrets are missing for the test environment:"
-            foreach ($secret in $missingSecrets) {
-              Write-Host "::error::- $secret"
-            }
-            exit 1
-          }
-
-          Write-Host "All required Azure secrets are defined for the test environment"
-
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: packaged_app_for_deployment
-          path: ./app-package
-
-      - name: Verify downloaded artifact
-        run: ls -la ./app-package
-
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ env.APP_NAME }}
-          package: ./app-package
+    with:
+      environment: test
+      app_name: giap-deploy-demo-test
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
   deploy_preproduction:
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/deploy.yml
     needs: deploy_test
-    environment:
-      name: preproduction
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    env:
-      APP_NAME: giap-deploy-demo-preproduction
-
-    permissions:
-      id-token: write # This is required for requesting the JWT (used to authenticate with Azure)
-      contents: read  # This is required for actions/checkout
-
-    steps:
-      - name: Verify Azure secrets are defined
-        shell: pwsh
-        run: |
-          $missingSecrets = @()
-
-          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_CLIENT_ID }}")) {
-            $missingSecrets += "AZURE_CLIENT_ID"
-          }
-
-          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_TENANT_ID }}")) {
-            $missingSecrets += "AZURE_TENANT_ID"
-          }
-
-          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_SUBSCRIPTION_ID }}")) {
-            $missingSecrets += "AZURE_SUBSCRIPTION_ID"
-          }
-
-          if ($missingSecrets.Count -gt 0) {
-            Write-Host "::error::The following secrets are missing for the preproduction environment:"
-            foreach ($secret in $missingSecrets) {
-              Write-Host "::error::- $secret"
-            }
-            exit 1
-          }
-
-          Write-Host "All required Azure secrets are defined for the preproduction environment"
-
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: packaged_app_for_deployment
-          path: ./app-package
-
-      - name: Verify downloaded artifact
-        run: ls -la ./app-package
-
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ env.APP_NAME }}
-          package: ./app-package
+    with:
+      environment: preproduction
+      app_name: giap-deploy-demo-preproduction
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
   deploy_prod:
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/deploy.yml
     needs: deploy_preproduction
-    environment:
-      name: production
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    env:
-      APP_NAME: giap-deploy-demo-production
-
-    permissions:
-      id-token: write # This is required for requesting the JWT (used to authenticate with Azure)
-      contents: read  # This is required for actions/checkout
-
-    steps:
-      - name: Verify Azure secrets are defined
-        shell: pwsh
-        run: |
-          $missingSecrets = @()
-
-          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_CLIENT_ID }}")) {
-            $missingSecrets += "AZURE_CLIENT_ID"
-          }
-
-          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_TENANT_ID }}")) {
-            $missingSecrets += "AZURE_TENANT_ID"
-          }
-
-          if ([string]::IsNullOrEmpty("${{ secrets.AZURE_SUBSCRIPTION_ID }}")) {
-            $missingSecrets += "AZURE_SUBSCRIPTION_ID"
-          }
-
-          if ($missingSecrets.Count -gt 0) {
-            Write-Host "::error::The following secrets are missing for the production environment:"
-            foreach ($secret in $missingSecrets) {
-              Write-Host "::error::- $secret"
-            }
-            exit 1
-          }
-
-          Write-Host "All required Azure secrets are defined for the production environment"
-
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: packaged_app_for_deployment
-          path: ./app-package
-
-      - name: Verify downloaded artifact
-        run: ls -la ./app-package
-
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ env.APP_NAME }}
-          package: ./app-package
+    with:
+      environment: production
+      app_name: giap-deploy-demo-production
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
