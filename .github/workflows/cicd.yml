@@ -21,6 +21,9 @@ jobs:
       - name: Setup .NET SDK from global.json
         uses: actions/setup-dotnet@v4
 
+      - name: Add DfEDigital NuGet Feed
+        run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name dfedigital "https://nuget.pkg.github.com/DFE-Digital/index.json"
+
       - name: Verify formatting
         run: dotnet format --include DfE.GIAP.Core/ DfE.GIAP.Core.UnitTests/ --verify-no-changes
         working-directory: ${{ env.SOLUTION_DIRECTORY }}
@@ -92,6 +95,10 @@ jobs:
 
       - name: Publish application
         run: dotnet publish DfE.GIAP.Web/DfE.GIAP.Web.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --output ${{ env.SOLUTION_DIRECTORY }}/publish
+        working-directory: ${{ env.SOLUTION_DIRECTORY }}
+
+      - name: Verify publish output
+        run: ls -hal ${{ env.SOLUTION_DIRECTORY }}
         working-directory: ${{ env.SOLUTION_DIRECTORY }}
 
       - name: Verify publish output
