@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      SOLUTION_DIRECTORY: ./DfE.GIAP.All
+      SOLUTION_DIRECTORY: DfE.GIAP.All
 
     steps:
       - name: Checkout code
@@ -33,7 +33,7 @@ jobs:
 
     env:
       BUILD_CONFIGURATION: Release
-      SOLUTION_DIRECTORY: ./DfE.GIAP.All
+      SOLUTION_DIRECTORY: DfE.GIAP.All
 
     steps:
       - name: Checkout code
@@ -259,3 +259,4 @@ jobs:
         with:
           app-name: ${{ env.APP_NAME }}
           package: ./app-package
+
