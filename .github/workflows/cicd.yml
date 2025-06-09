@@ -107,6 +107,7 @@ jobs:
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
+        working-directory: ${{ env.SOLUTION_DIRECTORY }}
         with:
           name: packaged_app_for_deployment
           path: ${{ env.SOLUTION_DIRECTORY }}/publish/
