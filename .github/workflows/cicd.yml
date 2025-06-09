@@ -1,0 +1,126 @@
+name: giap-web-cicd
+
+permissions:
+  contents: read
+  packages: read
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      BUILD_CONFIGURATION: Release
+      SOLUTION_DIRECTORY: ./DfE.GIAP.All
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '12'
+
+      - name: Setup .NET SDK from global.json
+        uses: actions/setup-dotnet@v4
+
+      - name: Install NuGet
+        uses: NuGet/setup-nuget@v1
+
+      - name: npm install
+        run: npm install
+        working-directory: ${{ env.SOLUTION_DIRECTORY }}/DfE.GIAP.Web
+
+      - name: Add DfEDigital NuGet Feed
+        run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name dfedigital "https://nuget.pkg.github.com/DFE-Digital/index.json"
+
+      - name: Restore NuGet packages
+        run: dotnet restore *.sln
+        working-directory: ${{ env.SOLUTION_DIRECTORY }}
+
+      - name: Build solution
+        run: dotnet build *.sln --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore -p:SkipInvalidConfigurations=true
+
+        # These are specific to windows-latest msdeploy so have been removed temporarily
+        #-p:DesktopBuildPackageLocation="${{ github.workspace }}\WebApp.zip"
+        # -p:DeployOnBuild=true -p:WebPublishMethod=Package -p:PackageAsSingleFile=true -p:DeployIisAppPath="Default Web Site"
+        working-directory: ${{ env.SOLUTION_DIRECTORY }}
+
+      - name: Run unit tests
+        run: dotnet test *.sln --configuration ${{ env.BUILD_CONFIGURATION }} --collect "XPlat Code coverage" -- RunConfiguration.DisableAppDomain=true
+        working-directory: ${{ env.SOLUTION_DIRECTORY }}
+
+      - name: Install ReportGenerator tool
+        run: dotnet tool install --tool-path ./tools dotnet-reportgenerator-globaltool --version 4.5.8
+        working-directory: ${{ env.SOLUTION_DIRECTORY }}
+
+      - name: Generate test coverage reports
+        run: ./tools/reportgenerator "-reports:**/coverage.cobertura.xml" "-targetdir:./coverlet/reports" "-reporttypes:Cobertura" "-assemblyfilters:-DfE.GIAP.Web.Views;-DfE.GIAP.Service.Tests"
+        working-directory: ${{ env.SOLUTION_DIRECTORY }}
+
+      - name: Upload test coverage reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: ${{ env.SOLUTION_DIRECTORY }}/coverlet/reports/Cobertura.xml
+
+      - name: Run gulp
+        run: |
+          npm install -g gulp
+          gulp default --gulpfile DfE.GIAP.Web/gulpfile.js --cwd DfE.GIAP.Web
+        working-directory: ${{ env.SOLUTION_DIRECTORY }}
+
+      - name: Verify formatting
+        run: dotnet format --include DfE.GIAP.Core/ DfE.GIAP.Core.UnitTests/ --verify-no-changes
+        working-directory: ./DfE.GIAP.All
+
+      - name: Publish application
+        run: dotnet publish *.sln --configuration ${{ env.BUILD_CONFIGURATION }} --output ${{ env.SOLUTION_DIRECTORY }}/publish
+        working-directory: ${{ env.SOLUTION_DIRECTORY }}
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: packaged_app_for_deployment
+          path: ${{ env.SOLUTION_DIRECTORY }}/publish
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    strategy:
+      matrix:
+        environment: ['development', 'test', 'production']
+    environment:
+      name: ${{ matrix.environment }}
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    env:
+      APP_NAME: ${{ 'giap-deploy-demo' }}-${{ matrix.environment }}
+
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read  # This is required for actions/checkout
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: packaged_app_for_deployment
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.APP_NAME }}
+          package: .
+
