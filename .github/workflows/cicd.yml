@@ -1,8 +1,9 @@
 name: giap-web-cicd
 
 permissions:
-  contents: read # This is required to checkout the code.
-  packages: read # This is required to access the DfEDigital NuGet feed.
+  contents: read  # This is required to checkout the code.
+  packages: read  # This is required to access the DfEDigital NuGet feed.
+  id-token: write # This is required for OIDC authentication with Azure
 
 on:
   push:
