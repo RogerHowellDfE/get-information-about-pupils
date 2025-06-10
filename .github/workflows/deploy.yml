@@ -18,6 +18,10 @@ on:
         required: true
       AZURE_SUBSCRIPTION_ID:
         required: true
+    outputs:
+      app_url:
+        description: "The URL of the deployed application"
+        value: ${{ jobs.deploy.outputs.app_url }}
 
 permissions:
   id-token: write # This is required for requesting the JWT (used to authenticate with Azure)
@@ -29,7 +33,9 @@ jobs:
     environment:
       name: ${{ inputs.environment }}
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+    outputs:
+      app_url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
     steps:
       - name: Verify Azure secrets are defined
         shell: pwsh
@@ -80,3 +86,9 @@ jobs:
         with:
           app-name: ${{ inputs.app_name }}
           package: ./app-package
+
+      - name: Deployment details
+        shell: pwsh
+        run: |
+          Write-Host "Deployment to ${{ inputs.environment }} environment completed"
+          Write-Host "Application URL: ${{ steps.deploy-to-webapp.outputs.webapp-url }}"

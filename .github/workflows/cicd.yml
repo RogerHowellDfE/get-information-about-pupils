@@ -119,9 +119,16 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+  smoke_test_dev:
+    uses: ./.github/workflows/smoke-test.yml
+    needs: deploy_dev
+    with:
+      environment: development
+      app_url: ${{ needs.deploy_dev.outputs.app_url }}
+
   deploy_test:
     uses: ./.github/workflows/deploy.yml
-    needs: deploy_dev
+    needs: smoke_test_dev
     with:
       environment: test
       app_name: giap-deploy-demo-test
@@ -130,9 +137,32 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+  smoke_test_test:
+    uses: ./.github/workflows/smoke-test.yml
+    needs: deploy_test
+    with:
+      environment: test
+      app_url: ${{ needs.deploy_test.outputs.app_url }}
+
+##  PLACEHOLDERS FOR ADDITIONAL TESTS
+#  integration_test_test:
+#    uses: ./.github/workflows/integration-test.yml
+#    needs: smoke_test_dev
+#    with:
+#      environment: test
+#      app_url: ${{ needs.deploy_dev.outputs.app_url }}
+#
+#  accessibilty_test_test:
+#    uses: ./.github/workflows/accessibility-test.yml
+#    needs: smoke_test_dev
+#    with:
+#      environment: test
+#      app_url: ${{ needs.deploy_dev.outputs.app_url }}
+#
   deploy_preproduction:
     uses: ./.github/workflows/deploy.yml
-    needs: deploy_test
+#    needs: [smoke_test_test, integration_test_test, accessibilty_test_test]
+    needs: [smoke_test_test]
     with:
       environment: preproduction
       app_name: giap-deploy-demo-preproduction
@@ -141,9 +171,25 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+  smoke_test_preproduction:
+    uses: ./.github/workflows/smoke-test.yml
+    needs: deploy_preproduction
+    with:
+      environment: preproduction
+      app_url: ${{ needs.deploy_preproduction.outputs.app_url }}
+
+##  PLACEHOLDERS FOR ADDITIONAL TESTS
+#  performance_test_preproduction:
+#    uses: ./.github/workflows/performance-test.yml
+#    needs: smoke_test_dev
+#    with:
+#      environment: preproduction
+#      app_url: ${{ needs.deploy_dev.outputs.app_url }}
+
   deploy_prod:
     uses: ./.github/workflows/deploy.yml
-    needs: deploy_preproduction
+    needs: smoke_test_preproduction
+#    needs: [smoke_test_preproduction, performance_test_preproduction]
     with:
       environment: production
       app_name: giap-deploy-demo-production
@@ -151,3 +197,10 @@ jobs:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+  smoke_test_prod:
+    uses: ./.github/workflows/smoke-test.yml
+    needs: deploy_prod
+    with:
+      environment: production
+      app_url: ${{ needs.deploy_prod.outputs.app_url }}
