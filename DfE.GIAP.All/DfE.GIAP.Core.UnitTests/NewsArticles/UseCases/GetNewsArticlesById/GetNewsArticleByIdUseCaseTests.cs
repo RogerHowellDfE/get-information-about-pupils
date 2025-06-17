@@ -1,6 +1,4 @@
-﻿using DfE.GIAP.Core.UnitTests.NewsArticles.UseCases.GetNewsArticlesById.TestDoubles;
-
-namespace DfE.GIAP.Core.UnitTests.NewsArticles.UseCases.GetNewsArticlesById;
+﻿namespace DfE.GIAP.Core.UnitTests.NewsArticles.UseCases.GetNewsArticlesById;
 
 public sealed class GetNewsArticleByIdUseCaseTests
 {
@@ -9,7 +7,7 @@ public sealed class GetNewsArticleByIdUseCaseTests
     [Fact]
     public void Constructor_ThrowsNullException_When_CreatedWithNullRepository()
     {
-        Action construct = () => new GetNewsArticleByIdUseCase(newsArticleReadRepository: null);
+        Action construct = () => new GetNewsArticleByIdUseCase(newsArticleReadRepository: null!);
         Assert.Throws<ArgumentNullException>(construct);
     }
 
@@ -18,7 +16,7 @@ public sealed class GetNewsArticleByIdUseCaseTests
     {
         Mock<INewsArticleReadRepository> mockRepository = NewsArticleReadOnlyRepositoryTestDoubles.Default();
         GetNewsArticleByIdUseCase sut = new(mockRepository.Object);
-        Func<Task> act = () => sut.HandleRequestAsync(request: null);
+        Func<Task> act = () => sut.HandleRequestAsync(request: null!);
 
         // Act Assert 
         await Assert.ThrowsAsync<ArgumentNullException>(act);
@@ -35,7 +33,7 @@ public sealed class GetNewsArticleByIdUseCaseTests
         Mock<INewsArticleReadRepository> mockRepository = NewsArticleReadOnlyRepositoryTestDoubles.Default();
         GetNewsArticleByIdUseCase sut = new(mockRepository.Object);
         GetNewsArticleByIdRequest request = new(id);
-        Func<Task> act = () => sut.HandleRequestAsync(request);
+        Func<Task> act = () => sut.HandleRequestAsync(request!);
 
         // Act Assert 
         await Assert.ThrowsAsync<ArgumentException>(act);

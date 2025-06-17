@@ -42,7 +42,7 @@ internal class NewsArticleEntityToDtoMapper : IMapper<NewsArticle, NewsArticleDT
             Pinned = input.Pinned,
             CreatedDate = input.CreatedDate,
             ModifiedDate = input.ModifiedDate,
-            DocumentType = 7
+            DOCTYPE = 7
         };
     }
 }

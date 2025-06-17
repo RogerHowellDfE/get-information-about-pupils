@@ -40,6 +40,6 @@ public sealed class NewsArticleEntityToDtoMapperTests
         Assert.Equal(mappedResponse.Published, inputEntity.Published);
         Assert.Equal(mappedResponse.Archived, inputEntity.Archived);
         Assert.Equal(mappedResponse.Pinned, inputEntity.Pinned);
-        Assert.Equal(7, mappedResponse.DocumentType); // Temporary, to be removed when DocumentType is removed from DTOs
+        Assert.Equal(7, mappedResponse.DOCTYPE); // Temporary, to be removed when DocumentType is removed from DTOs
     }
 }
