@@ -54,29 +54,29 @@ jobs:
         run: dotnet tool restore
         shell: bash
 
-      # For SonarCloud Scanner
-      - name: Setup Java ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v4
-        with:
-          distribution: "zulu"
-          java-version: '17'
+      # # For SonarCloud Scanner
+      # - name: Setup Java ${{ env.JAVA_VERSION }}
+      #   uses: actions/setup-java@v4
+      #   with:
+      #     distribution: "zulu"
+      #     java-version: '17'
 
-      - name: Start SonarCloud Scanner
-        shell: bash
-        run: |
-          dotnet tool run dotnet-sonarscanner begin \
-            /k:"DFE-Digital_get-information-about-pupils" \
-            /o:"dfe-digital" \
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
-            /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.coverageReportPaths=${{env.SOLUTION_DIRECTORY}}/coverlet/merged/SonarQube.xml \
-            /d:sonar.coverage.exclusions=**/*.html,**/*.json,**/*.sql,**/*.js,**/*.ts,**/*.scss,**/wwwroot/**,**/Migrations/** \
-            /d:sonar.exclusions=**/*.html,**/*.json,**/wwwroot/**,**/Migrations/**,**/bin/**,**/obj/** \
-            /d:sonar.scanner.skipJreProvisioning=true \
-            /d:sonar.scanner.scanAll=false
+      # - name: Start SonarCloud Scanner
+      #   shell: bash
+      #   run: |
+      #     dotnet tool run dotnet-sonarscanner begin \
+      #       /k:"DFE-Digital_get-information-about-pupils" \
+      #       /o:"dfe-digital" \
+      #       /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+      #       /d:sonar.host.url="https://sonarcloud.io" \
+      #       /d:sonar.coverageReportPaths=${{env.SOLUTION_DIRECTORY}}/coverlet/merged/SonarQube.xml \
+      #       /d:sonar.coverage.exclusions=**/*.html,**/*.json,**/*.sql,**/*.js,**/*.ts,**/*.scss,**/wwwroot/**,**/Migrations/** \
+      #       /d:sonar.exclusions=**/*.html,**/*.json,**/wwwroot/**,**/Migrations/**,**/bin/**,**/obj/** \
+      #       /d:sonar.scanner.skipJreProvisioning=true \
+      #       /d:sonar.scanner.scanAll=false
 
       - name: Build
-        uses: ./.github/actions/build
+        uses: ./.github3/actions/build
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -118,10 +118,10 @@ jobs:
           name: coverage-reports
           path: ${{ env.SOLUTION_DIRECTORY }}/coverlet/reports/*
 
-      - name: End SonarCloud Scanner
-        if: always()
-        shell: bash
-        run: dotnet tool run dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+      # - name: End SonarCloud Scanner
+      #   if: always()
+      #   shell: bash
+      #   run: dotnet tool run dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
 
       - name: Code Coverage Report
