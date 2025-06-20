@@ -191,6 +191,7 @@ jobs:
           sudo update-ca-certificates
 
       - name: Run Integration Tests
+        working-directory: ${{ env.SOLUTION_DIRECTORY }}
         run: |
           dotnet test "./DfE.GIAP.All/DfE.GIAP.Core.IntegrationTests/DfE.GIAP.Core.IntegrationTests.csproj" \  
               --no-build \
