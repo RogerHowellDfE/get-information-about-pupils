@@ -100,6 +100,7 @@ jobs:
               --no-build \
               --nologo \
               --logger "console;verbosity=detailed" \
+              --logger "trx" \
               -p:CollectCoverage=true \
               -p:CoverletOutputFormat=cobertura \
               -p:CoverletOutput="$OUTPUT_REPORT_PATH"
@@ -120,6 +121,35 @@ jobs:
         if: always()
         shell: bash
         run: dotnet tool run dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+
+      - name: Code Coverage Report
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        if: always()
+        with:
+          filename: '**/*cobertura.xml'
+          badge: true
+          fail_below_min: false
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: false
+          indicators: true
+          output: both
+          thresholds: '60 80'
+  
+      - name: Add Coverage PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: always() && github.event_name == 'pull_request'
+        with:
+          ## `code-coverage-results.md` is default filename for output from `irongut/CodeCoverageSummary`
+          path: code-coverage-results.md
+  
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          trx_files: "${{ github.workspace }}/**/*.trx"
+    
 
       - name: Run gulp
         run: |
