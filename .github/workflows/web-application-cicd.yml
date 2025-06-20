@@ -233,24 +233,28 @@ jobs:
         with:
           name: trx-unit-test-logs
           path: ./trx-unit-test-logs
+        continue-on-error: true
 
       - name: Download unit test coverage reports
         uses: actions/download-artifact@v4.3.0
         with:
           name: coverage-reports
           path: ./coverage-reports
+        continue-on-error: true
 
       - name: Download integration test coverage reports
         uses: actions/download-artifact@v4.3.0
         with:
           name: coverage-reports-integration-test
           path: ./coverage-reports
+        continue-on-error: true
 
       - name: Download a Build Artifact
         uses: actions/download-artifact@v4.3.0
         with:
           name: coverage-reports
           path: ./coverage-reports
+        continue-on-error: true
 
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
