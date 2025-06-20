@@ -115,7 +115,7 @@ jobs:
       - name: Upload individual test projects coverage reports
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-reports
+          name: coverage-reports-unit-test
           path: ${{ env.SOLUTION_DIRECTORY }}/coverlet/reports/*
 
       - name: Upload individual test projects coverage reports
@@ -210,7 +210,7 @@ jobs:
       - name: Upload integration test trx logs
         uses: actions/upload-artifact@v4
         with:
-          name: trx-unit-test-logs
+          name: trx-integration-test-logs
           path: ${{ env.SOLUTION_DIRECTORY }}/**/*.trx
 
 
@@ -234,26 +234,24 @@ jobs:
           name: trx-unit-test-logs
           path: ./trx-unit-test-logs
         continue-on-error: true
-
       - name: Download unit test coverage reports
         uses: actions/download-artifact@v4.3.0
         with:
-          name: coverage-reports
-          path: ./coverage-reports
+          name: coverage-reports-unit-test
+          path: ./coverage-reports-unit-test
         continue-on-error: true
 
       - name: Download integration test coverage reports
         uses: actions/download-artifact@v4.3.0
         with:
           name: coverage-reports-integration-test
-          path: ./coverage-reports
+          path: ./coverage-reports-integration-test
         continue-on-error: true
-
-      - name: Download a Build Artifact
+      - name: Download integration test trx log files
         uses: actions/download-artifact@v4.3.0
         with:
-          name: coverage-reports
-          path: ./coverage-reports
+          name: trx-integration-test-logs
+          path: ./trx-integration-test-logs
         continue-on-error: true
 
       - name: Code Coverage Report
@@ -556,4 +554,6 @@ jobs:
 #        uses: ./.github/actions/security-test
 #        with:
 #          app_url: ${{ needs.deploy_env_production.outputs.app_url }}
+
+
 
