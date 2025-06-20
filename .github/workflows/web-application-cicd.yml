@@ -193,13 +193,13 @@ jobs:
       - name: Run Integration Tests
         run: |
           dotnet test "./DfE.GIAP.All/DfE.GIAP.Core.IntegrationTests/DfE.GIAP.Core.IntegrationTests.csproj" \
-              --no-build \
-              --nologo \
-              --logger "console;verbosity=detailed" \
-              --logger "trx" \
-              -p:CollectCoverage=true \
-              -p:CoverletOutputFormat=cobertura \
-              -p:CoverletOutput="$OUTPUT_REPORT_PATH"
+            --no-build \
+            --nologo \
+            --logger "console;verbosity=detailed" \
+            --logger "trx" \
+            -p:CollectCoverage=true \
+            -p:CoverletOutputFormat=cobertura \
+            -p:CoverletOutput="./DfE.GIAP.All/coverlet/reports/DfE.GIAP.Core.IntegrationTests/"
 
       - name: Upload integration test coverage reports
         uses: actions/upload-artifact@v4
