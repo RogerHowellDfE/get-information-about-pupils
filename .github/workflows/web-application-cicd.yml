@@ -38,8 +38,9 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read  # Required to check out the code.
-      packages: read  # Required to access the DfEDigital NuGet feed.
+      contents: read        # Required to check out the code.
+      packages: read        # Required to access the DfEDigital NuGet feed.
+      pull-requests: write  # Required to add PR comments with test results and coverage details etc.
 
     steps:
       - name: Checkout code
