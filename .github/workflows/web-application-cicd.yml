@@ -76,7 +76,7 @@ jobs:
       #       /d:sonar.scanner.scanAll=false
 
       - name: Build
-        uses: ./.github3/actions/build
+        uses: ./.github/actions/build
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
