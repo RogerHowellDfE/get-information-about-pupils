@@ -41,6 +41,7 @@ jobs:
       contents: read        # Required to check out the code.
       packages: read        # Required to access the DfEDigital NuGet feed.
       pull-requests: write  # Required to add PR comments with test results and coverage details etc.
+      checks: write         # Required to report test results/coverage as a status check
 
     steps:
       - name: Checkout code
