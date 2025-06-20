@@ -40,8 +40,6 @@ jobs:
     permissions:
       contents: read        # Required to check out the code.
       packages: read        # Required to access the DfEDigital NuGet feed.
-      pull-requests: write  # Required to add PR comments with test results and coverage details etc.
-      checks: write         # Required to report test results/coverage as a status check
 
     steps:
       - name: Checkout code
@@ -219,6 +217,7 @@ jobs:
   report_test_results:
     runs-on: ubuntu-latest
     needs: [build_test_package, local_integration_tests]
+    if: always()
 
     permissions:
       contents: read        # Required to check out the code.
